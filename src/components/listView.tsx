@@ -15,7 +15,7 @@ const ListView: React.FC<ListViewProps> = (props) => {
   return (
     <Grid container spacing={2} padding={2}>
       {todos.map((todoItem) => (
-        <Grid item spacing={2} xs={12} sm={4} md={3} key={todoItem.id}>
+        <Grid item xs={12} sm={4} md={3} key={todoItem.id}>
           <ItemSummary {...todoItem} />
         </Grid>
       ))}
