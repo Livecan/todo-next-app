@@ -4,13 +4,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { TodoListSchemaType } from "../schema/todoList";
 
-interface TodoListItemProps {
-  id: string;
-  name: string;
-}
-
-const TodoListItem: React.FC<TodoListItemProps> = (props) => {
+const TodoListItem: React.FC<TodoListSchemaType> = (props) => {
   const { name } = props;
 
   return (
@@ -23,7 +19,7 @@ const TodoListItem: React.FC<TodoListItemProps> = (props) => {
 };
 
 interface ListsDrawerProps {
-  lists: TodoListItemProps[];
+  lists: TodoListSchemaType[];
   open: boolean;
   toggleOpen: () => unknown;
 }

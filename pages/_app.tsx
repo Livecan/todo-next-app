@@ -1,12 +1,14 @@
-import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import "@/styles/globals.css";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material";
-import Layout from "@/src/components/layout";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "../src/api/queries";
+import Layout from "../src/components/layout";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,11 +20,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <CssBaseline />
-      <ThemeProvider theme={darkTheme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkTheme}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   );
 }

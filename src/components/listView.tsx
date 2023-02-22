@@ -1,9 +1,10 @@
-import { Grid, Stack } from "@mui/material";
-import ItemSummary, { todoItem } from "./itemSummary";
+import { Grid } from "@mui/material";
+import { TodoItemSchemaType } from "../schema/todoItem";
+import ItemSummary from "./itemSummary";
 
 export interface ListViewProps {
   listId: string;
-  todos: todoItem[];
+  todos: TodoItemSchemaType[];
 }
 
 /**

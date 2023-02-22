@@ -1,14 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import { TodoItemSchemaType } from "../schema/todoItem";
 
-export interface todoItem {
-  id: string;
-  title: string;
-  content: string;
-  deadline: Date;
-  completed: boolean;
-}
-
-const ItemSummary: React.FC<todoItem> = (props) => {
+const ItemSummary: React.FC<TodoItemSchemaType> = (props) => {
   const { id, title, content, deadline, completed } = props;
 
   // @todo Move to utils formatting date
@@ -22,6 +15,7 @@ const ItemSummary: React.FC<todoItem> = (props) => {
       <CardContent>
         <Typography variant="h6">{title}</Typography>
         <Typography>{formattedDate}</Typography>
+        {/* @todo Add tooltip on this one */}
         <Typography variant="body2" noWrap>
           {content}
         </Typography>

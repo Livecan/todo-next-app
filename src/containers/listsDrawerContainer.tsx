@@ -1,10 +1,5 @@
+import { useGetTodoListsQuery } from "../api/queries";
 import ListsDrawer from "../components/listsDrawer";
-
-const TODO_LISTS = [
-  { id: "0", name: "List 1" },
-  { id: "123", name: "List 2" },
-  { id: "12345", name: "List 3" },
-];
 
 interface ListsDrawerContainerProps {
   open: boolean;
@@ -12,7 +7,14 @@ interface ListsDrawerContainerProps {
 }
 
 const ListsDrawerContainer: React.FC<ListsDrawerContainerProps> = (props) => {
-  return <ListsDrawer {...props} lists={TODO_LISTS} />;
+  const { status, data } = useGetTodoListsQuery();
+
+  return (
+    <>
+      {status === "success" && <ListsDrawer {...props} lists={data} />}
+      {status === "loading" && "Loading"}
+    </>
+  );
 };
 
 export default ListsDrawerContainer;
