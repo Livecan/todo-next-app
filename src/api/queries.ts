@@ -1,4 +1,4 @@
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import { TodoListSchemaType } from "../schema/todoList";
@@ -16,6 +16,17 @@ export const useGetTodoListsQuery = () =>
         .get<TodoListSchemaType[]>(`/API/v1/todo-lists`)
         .then((res) => res.data),
     { retry: false }
+  );
+
+export const useCreateTodoListMutation = () =>
+  useMutation(
+    (todoList: TodoListSchemaType) =>
+      customAxois.post<TodoListSchemaType>(`/API/v1/todo-lists`, todoList),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todo-lists");
+      },
+    }
   );
 
 export const useGetTodosQuery = (listId: string) =>

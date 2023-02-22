@@ -6,7 +6,7 @@ import ListsDrawerContainer from "../containers/listsDrawerContainer";
 import useAppNavigation from "../hooks/useAppNavigation";
 
 const Layout: React.FC<React.PropsWithChildren> = (props) => {
-  const { redirectViewTodoList } = useAppNavigation();
+  const { redirectViewTodoList, redirectCreateTodoList } = useAppNavigation();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -30,6 +30,7 @@ const Layout: React.FC<React.PropsWithChildren> = (props) => {
         open={drawerOpen}
         toggleOpen={toggleDrawerOpen}
         viewList={redirectViewTodoList}
+        createList={redirectCreateTodoList}
       />
       {props.children}
     </>

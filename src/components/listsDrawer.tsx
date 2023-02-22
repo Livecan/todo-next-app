@@ -4,6 +4,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import AddIcon from "@mui/icons-material/Add";
 import { TodoListSchemaType } from "../schema/todoList";
 import { useCallback } from "react";
 
@@ -28,10 +29,11 @@ interface ListsDrawerProps {
   open: boolean;
   toggleOpen: (open?: boolean) => unknown;
   viewList: (listId: string) => unknown;
+  createList: () => unknown;
 }
 
 const ListsDrawer: React.FC<ListsDrawerProps> = (props) => {
-  const { lists, open, toggleOpen, viewList } = props;
+  const { lists, open, toggleOpen, viewList, createList } = props;
 
   const handleViewList = useCallback(
     (listId: string) => {
@@ -41,15 +43,26 @@ const ListsDrawer: React.FC<ListsDrawerProps> = (props) => {
     [toggleOpen, viewList]
   );
 
+  const handleCreateList = useCallback(() => {
+    toggleOpen(false);
+    createList();
+  }, [toggleOpen, createList]);
+
   return (
     <SwipeableDrawer
       variant="temporary"
       open={open}
-      onOpen={() => toggleOpen}
-      onClose={() => toggleOpen}
+      onOpen={() => toggleOpen()}
+      onClose={() => toggleOpen()}
     >
       <Box minWidth={200}>
         <List>
+          <ListItem>
+            <ListItemButton onClick={handleCreateList}>
+              <AddIcon />
+              <ListItemText>Add TODO list</ListItemText>
+            </ListItemButton>
+          </ListItem>
           {lists.map((list) => (
             <TodoListItem key={list.id} {...list} viewList={handleViewList} />
           ))}

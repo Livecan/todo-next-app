@@ -1,10 +1,13 @@
-import { useGetTodoListsQuery } from "../api/queries";
+import {
+  useGetTodoListsQuery,
+} from "../api/queries";
 import ListsDrawer from "../components/listsDrawer";
 
 interface ListsDrawerContainerProps {
   open: boolean;
   toggleOpen: () => unknown;
   viewList: (listId: string) => unknown;
+  createList: () => unknown;
 }
 
 const ListsDrawerContainer: React.FC<ListsDrawerContainerProps> = (props) => {
