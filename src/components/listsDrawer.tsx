@@ -5,13 +5,18 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { TodoListSchemaType } from "../schema/todoList";
+import { useCallback } from "react";
 
-const TodoListItem: React.FC<TodoListSchemaType> = (props) => {
-  const { name } = props;
+type TodoListItemProps = TodoListSchemaType & {
+  viewList: (listId: string) => unknown;
+};
+
+const TodoListItem: React.FC<TodoListItemProps> = (props) => {
+  const { id, name, viewList } = props;
 
   return (
     <ListItem>
-      <ListItemButton>
+      <ListItemButton onClick={() => viewList(id!)}>
         <ListItemText>{name}</ListItemText>
       </ListItemButton>
     </ListItem>
@@ -21,23 +26,32 @@ const TodoListItem: React.FC<TodoListSchemaType> = (props) => {
 interface ListsDrawerProps {
   lists: TodoListSchemaType[];
   open: boolean;
-  toggleOpen: () => unknown;
+  toggleOpen: (open?: boolean) => unknown;
+  viewList: (listId: string) => unknown;
 }
 
 const ListsDrawer: React.FC<ListsDrawerProps> = (props) => {
-  const { lists, open, toggleOpen } = props;
+  const { lists, open, toggleOpen, viewList } = props;
+
+  const handleViewList = useCallback(
+    (listId: string) => {
+      toggleOpen(false);
+      viewList(listId);
+    },
+    [toggleOpen, viewList]
+  );
 
   return (
     <SwipeableDrawer
       variant="temporary"
       open={open}
-      onOpen={toggleOpen}
-      onClose={toggleOpen}
+      onOpen={() => toggleOpen}
+      onClose={() => toggleOpen}
     >
       <Box minWidth={200}>
         <List>
           {lists.map((list) => (
-            <TodoListItem key={list.id} {...list} />
+            <TodoListItem key={list.id} {...list} viewList={handleViewList} />
           ))}
         </List>
       </Box>

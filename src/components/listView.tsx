@@ -13,6 +13,11 @@ export interface ListViewProps {
 const ListView: React.FC<ListViewProps> = (props) => {
   const { listId, todos } = props;
 
+  if (todos.length === 0) {
+    // @todo Consider something smarter?
+    return "No TODOs in the list..."
+  }
+
   return (
     <Grid container spacing={2} padding={2}>
       {todos.map((todoItem) => (

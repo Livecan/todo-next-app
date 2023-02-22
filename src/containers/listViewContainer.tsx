@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useGetTodosQuery } from "../api/queries";
 import ListView from "../components/listView";
 
@@ -15,7 +14,7 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
     <>
       {status === "success" && <ListView listId={id} todos={data} />}
       {/* @todo Add loader or skeleton or something */}
-      {status === "loading" || (true && "Loading...")}
+      {status === "loading" && "Loading..."}
     </>
   );
 };
