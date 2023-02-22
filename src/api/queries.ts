@@ -3,24 +3,29 @@ import axios from "axios";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import { TodoListSchemaType } from "../schema/todoList";
 
+const customAxois = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
 export const queryClient = new QueryClient();
 
 export const useGetTodoListsQuery = () =>
-  useQuery<TodoListSchemaType[]>("todo-lists", () =>
-    axios
-    // @todo Move the API endpoints into .env files!
-      .get("https://63f4bd653f99f5855db63c3d.mockapi.io/API/v1/todo-lists")
-      .then((res) => res.data)
+  useQuery(
+    "todo-lists",
+    () =>
+      customAxois
+        .get<TodoListSchemaType[]>(`/API/v1/todo-lists`)
+        .then((res) => res.data),
+    { retry: false }
   );
 
 export const useGetTodosQuery = (listId: string) =>
   useQuery<TodoItemSchemaType[]>(`todo-items ${listId}`, () =>
-    axios
-      .get(
-        `https://63f4bd653f99f5855db63c3d.mockapi.io/API/v1/todo-lists/${listId}/todo-items`
+    customAxois
+      .get<(TodoItemSchemaType & { deadline: number })[]>(
+        `/API/v1/todo-lists/${listId}/todo-items`
       )
       .then((res) =>
-        res.data.map((todoItem: any) => ({
+        res.data.map((todoItem) => ({
           ...todoItem,
           deadline: new Date(todoItem.deadline),
         }))
