@@ -8,6 +8,8 @@ const customAxois = axios.create({
 });
 export const queryClient = new QueryClient();
 
+// @todo Create appropriate detailed types for all the queries
+
 export const useGetTodoListsQuery = () =>
   useQuery(
     "todo-lists",
@@ -41,4 +43,18 @@ export const useGetTodosQuery = (listId: string) =>
           deadline: new Date(todoItem.deadline),
         }))
       )
+  );
+
+export const useCreateTodoItemMutation = (listId: string) =>
+  useMutation(
+    (todoItem: TodoItemSchemaType) =>
+      customAxois.post<TodoItemSchemaType>(
+        `/API/v1/todo-lists/${listId}/todo-items`,
+        { ...todoItem, deadline: todoItem.deadline.getTime() }
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(`todo-items ${listId}`);
+      },
+    }
   );

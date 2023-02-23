@@ -9,6 +9,8 @@ const useAppNavigation = () => {
       redirectDashboard: () => push("/"),
       redirectViewTodoList: (id: string) => push(`/todo-list/${id}`),
       redirectCreateTodoList: () => push(`/todo-list/new`),
+      redirectCreateTodoItem: (listId: string) =>
+        push(`/todo-list/${listId}/todo-item/new`),
     }),
     [push]
   );
