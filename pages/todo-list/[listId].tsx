@@ -3,17 +3,28 @@ import { useRouter } from "next/router";
 import ListViewContainer from "@/src/containers/listViewContainer";
 import ListViewHeadingContainer from "@/src/containers/listViewHeadingContainer";
 import useAppNavigation from "@/src/hooks/useAppNavigation";
+import FilterValueType from "@/src/types/filterValueType";
 
 const TodoList: NextPage = () => {
   const { query } = useRouter();
-  const { redirectCreateTodoItem } = useAppNavigation();
+  const { redirectCreateTodoItem, redirectViewTodoList } = useAppNavigation();
 
-  const id = query.listId as string;
+  const { listId: id, filter = "all" } = query as {
+    listId: string;
+    filter?: FilterValueType;
+  };
 
   return (
     <>
-      <ListViewHeadingContainer id={id} onCreateItem={redirectCreateTodoItem} />
-      <ListViewContainer id={id} />
+      <ListViewHeadingContainer
+        id={id}
+        onCreateItem={redirectCreateTodoItem}
+        filter={filter}
+        onChangeFilter={(filter: FilterValueType) =>
+          redirectViewTodoList(id, filter)
+        }
+      />
+      <ListViewContainer id={id} filter={filter} />
     </>
   );
 };

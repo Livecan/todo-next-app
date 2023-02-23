@@ -1,17 +1,19 @@
 import { useMemo } from "react";
-import { Button, Stack, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { useGetTodoListsQuery } from "../api/queries";
+import ListViewHeading from "../components/listViewHeading";
+import FilterValueType from "../types/filterValueType";
 
 interface ListViewHeadingContainerProps {
   id: string;
   onCreateItem: (id: string) => unknown;
+  filter: FilterValueType;
+  onChangeFilter: (filter: FilterValueType) => unknown;
 }
 
 const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
   props
 ) => {
-  const { id, onCreateItem } = props;
+  const { id } = props;
 
   // Because of caching kicking in, it is better to load all todo lists here
   // rather than making a separate API call for each todo list
@@ -24,17 +26,7 @@ const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
   );
 
   if (status === "success") {
-    return (
-      <Stack padding={2} direction="row">
-        <Typography variant="h4" flexGrow={1}>
-          {currentList?.name}
-        </Typography>
-        <Button variant="outlined" onClick={() => onCreateItem(id)}>
-          <AddIcon />
-          <Typography>Add Todo item</Typography>
-        </Button>
-      </Stack>
-    );
+    return <ListViewHeading name={currentList?.name!} {...props} />;
   } else {
     // @todo
     return "???";
