@@ -5,6 +5,7 @@ import {
   Select,
   MenuItem,
   Box,
+  TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TodoListSchemaType } from "../schema/todoList";
@@ -14,16 +15,33 @@ type ListViewHeadingProps = TodoListSchemaType & {
   onCreateItem: (id: string) => unknown;
   filter: FilterValueType;
   onChangeFilter: (filter: FilterValueType) => unknown;
+  search?: string;
+  onSearchChange: (search: string) => unknown;
 };
 
 const ListViewHeading: React.FC<ListViewHeadingProps> = (props) => {
-  const { id, name, onCreateItem, filter, onChangeFilter } = props;
+  const {
+    id,
+    name,
+    onCreateItem,
+    filter,
+    onChangeFilter,
+    search,
+    onSearchChange,
+  } = props;
+  // @todo If done network requests, would use debouncing
 
   return (
     <Stack padding={2} direction="row">
       <Typography variant="h4" flexGrow={1}>
         {name}
       </Typography>
+      <TextField
+        placeholder="Search"
+        value={search}
+        onChange={(event) => onSearchChange(event.target.value)}
+      />
+      <Typography flexGrow={1} />
       <Box minWidth={150}>
         <Select
           fullWidth

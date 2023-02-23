@@ -8,8 +8,16 @@ const useAppNavigation = () => {
   const redirects = useMemo(
     () => ({
       redirectDashboard: () => push("/"),
-      redirectViewTodoList: (id: string, filter?: FilterValueType) =>
-        push({ pathname: `/todo-list/${id}`, query: { filter } }),
+      redirectViewTodoList: (
+        id: string,
+        options?: { filter?: FilterValueType; search?: string }
+      ) => {
+        const { filter, search } = options ?? {};
+        return push({
+          pathname: `/todo-list/${id}`,
+          query: { filter, search },
+        });
+      },
       redirectCreateTodoList: () => push(`/todo-list/new`),
       redirectCreateTodoItem: (listId: string) =>
         push(`/todo-list/${listId}/todo-item/new`),

@@ -9,9 +9,14 @@ const TodoList: NextPage = () => {
   const { query } = useRouter();
   const { redirectCreateTodoItem, redirectViewTodoList } = useAppNavigation();
 
-  const { listId: id, filter = "all" } = query as {
+  const {
+    listId: id,
+    filter = "all",
+    search,
+  } = query as {
     listId: string;
     filter?: FilterValueType;
+    search?: string;
   };
 
   return (
@@ -21,10 +26,14 @@ const TodoList: NextPage = () => {
         onCreateItem={redirectCreateTodoItem}
         filter={filter}
         onChangeFilter={(filter: FilterValueType) =>
-          redirectViewTodoList(id, filter)
+          redirectViewTodoList(id, { filter, search })
+        }
+        search={search}
+        onSearchChange={(search: string) =>
+          redirectViewTodoList(id, { filter, search })
         }
       />
-      <ListViewContainer id={id} filter={filter} />
+      <ListViewContainer id={id} filter={filter} search={search} />
     </>
   );
 };

@@ -10,10 +10,11 @@ import FilterValueType from "../types/filterValueType";
 interface ListViewContainerProps {
   id: string;
   filter?: FilterValueType;
+  search?: string;
 }
 
 const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
-  const { id, filter = "all" } = props;
+  const { id, filter = "all", search = "" } = props;
 
   const { status, data } = useGetTodosQuery(id);
   // @todo use these states for loading and disable UI interactions!
@@ -35,11 +36,13 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
     () =>
       data?.filter(
         (item) =>
-          filter === "all" ||
-          (filter === "active" && !item.completed) ||
-          (filter === "completed" && item.completed)
+          // Filters out items that pass filter and search string.
+          (filter === "all" ||
+            (filter === "active" && !item.completed) ||
+            (filter === "completed" && item.completed)) &&
+          (item.title.includes(search) || item.content?.includes(search))
       ) ?? [],
-    [data, filter]
+    [data, filter, search]
   );
 
   return (

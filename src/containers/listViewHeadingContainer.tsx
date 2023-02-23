@@ -8,6 +8,8 @@ interface ListViewHeadingContainerProps {
   onCreateItem: (id: string) => unknown;
   filter: FilterValueType;
   onChangeFilter: (filter: FilterValueType) => unknown;
+  search?: string;
+  onSearchChange: (search: string) => unknown;
 }
 
 const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
