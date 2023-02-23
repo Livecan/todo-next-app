@@ -1,4 +1,10 @@
-import { Box, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import todoListSchema, { TodoListSchemaType } from "../schema/todoList";
 import { useForm } from "react-hook-form";
@@ -19,15 +25,29 @@ const ListForm: React.FC<ListFormProps> = (props) => {
   });
 
   return (
-    <Box
+    <Container
       component="form"
+      maxWidth="xs"
       noValidate
-      display="flex"
-      justifyContent="center"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <TextField required label="Name" {...register("name")} />
-    </Box>
+      <Stack spacing={2} mt={2}>
+        <Typography variant="h4" mt="2">
+          New Todo list
+        </Typography>
+        <TextField
+          required
+          fullWidth
+          label="Name"
+          {...register("name")}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+        <Button type="submit" variant="outlined">
+          Create list
+        </Button>
+      </Stack>
+    </Container>
   );
 };
 
