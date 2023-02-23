@@ -9,6 +9,8 @@ import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import { TodoItemSchemaType } from "../schema/todoItem";
+import formatDate from "../utils/datetimeFormatter";
+import { useMemo } from "react";
 
 type ItemSummaryProps = TodoItemSchemaType & {
   onMarkCompleted: (id: string) => unknown;
@@ -20,10 +22,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
     props;
 
   // @todo Move to utils formatting date
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(deadline);
+  const formattedDate = useMemo(() => formatDate(deadline), [deadline]);
 
   return (
     <Card>
@@ -34,7 +33,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
           </Typography>
           <IconButton
             aria-label={completed ? "completed" : "mark completed"}
-            onClick={() => onMarkCompleted(id)}
+            onClick={() => onMarkCompleted(id!)}
           >
             {completed ? <DoneIcon /> : <AccessAlarmIcon />}
           </IconButton>

@@ -69,7 +69,7 @@ const ItemForm: React.FC<ItemFormProps> = (props) => {
           />
         </LocalizationProvider>
         <Button type="submit" variant="outlined">
-          Create list
+          Create Todo item
         </Button>
       </Stack>
     </Container>
