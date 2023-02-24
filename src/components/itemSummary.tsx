@@ -38,7 +38,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
     <Card>
       <CardContent>
         <Stack direction="row">
-          <Link variant="h6" flexGrow={1} onClick={() => onViewItem(id)}>
+          <Link variant="h6" flexGrow={1} onClick={() => onViewItem(id!)}>
             {title}
           </Link>
           <IconButton
