@@ -5,6 +5,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodoListSchemaType } from "../schema/todoList";
@@ -33,6 +34,7 @@ const TodoListItem: React.FC<TodoListItemProps> = (props) => {
 interface ListsDrawerProps {
   lists: TodoListSchemaType[];
   open: boolean;
+  isLoading?: boolean;
   toggleOpen: (open?: boolean) => unknown;
   viewList: (listId: string) => unknown;
   createList: () => unknown;
@@ -40,7 +42,15 @@ interface ListsDrawerProps {
 }
 
 const ListsDrawer: React.FC<ListsDrawerProps> = (props) => {
-  const { lists, open, toggleOpen, viewList, createList, deleteList } = props;
+  const {
+    lists,
+    open,
+    isLoading = false,
+    toggleOpen,
+    viewList,
+    createList,
+    deleteList,
+  } = props;
 
   const handleViewList = useCallback(
     (listId: string) => {
@@ -62,23 +72,27 @@ const ListsDrawer: React.FC<ListsDrawerProps> = (props) => {
       onOpen={() => toggleOpen()}
       onClose={() => toggleOpen()}
     >
-      <Box minWidth={200}>
-        <List>
-          <ListItem>
-            <ListItemButton onClick={handleCreateList}>
-              <AddIcon />
-              <ListItemText>Add TODO list</ListItemText>
-            </ListItemButton>
-          </ListItem>
-          {lists.map((list) => (
-            <TodoListItem
-              key={list.id}
-              {...list}
-              viewList={handleViewList}
-              deleteList={deleteList}
-            />
-          ))}
-        </List>
+      <Box display="flex" minWidth={200} justifyContent="center">
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <List>
+            <ListItem>
+              <ListItemButton onClick={handleCreateList}>
+                <AddIcon />
+                <ListItemText>Add TODO list</ListItemText>
+              </ListItemButton>
+            </ListItem>
+            {lists.map((list) => (
+              <TodoListItem
+                key={list.id}
+                {...list}
+                viewList={handleViewList}
+                deleteList={deleteList}
+              />
+            ))}
+          </List>
+        )}
       </Box>
     </SwipeableDrawer>
   );

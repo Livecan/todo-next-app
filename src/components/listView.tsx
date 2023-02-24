@@ -1,10 +1,12 @@
 import { Grid } from "@mui/material";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import ItemSummary from "./itemSummary";
+import LoaderModal from "./LoaderModal";
 
 export interface ListViewProps {
   listId: string;
   todos: TodoItemSchemaType[];
+  isLoading?: boolean;
   onMarkItemCompleted: (id: string) => unknown;
   onDeleteItem: (id: string) => unknown;
   onViewItem: (itemId: string) => unknown;
@@ -14,11 +16,22 @@ export interface ListViewProps {
  * Displays the todo items as received via props.
  */
 const ListView: React.FC<ListViewProps> = (props) => {
-  const { listId, todos, onMarkItemCompleted, onDeleteItem, onViewItem } = props;
+  const {
+    listId,
+    todos,
+    isLoading = false,
+    onMarkItemCompleted,
+    onDeleteItem,
+    onViewItem,
+  } = props;
 
   if (todos.length === 0) {
     // @todo Consider something smarter?
     return "No TODOs in the list...";
+  }
+
+  if (isLoading) {
+    return <LoaderModal open={true} />;
   }
 
   return (

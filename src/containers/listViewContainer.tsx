@@ -53,21 +53,19 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
     [data, filter, search]
   );
 
-  return (
-    <>
-      {status === "success" && (
-        <ListView
-          listId={id}
-          todos={filteredItems}
-          onMarkItemCompleted={handleMarkItemCompleted}
-          onDeleteItem={removeItem}
-          onViewItem={onViewItem}
-        />
-      )}
-      {/* @todo Add loader or skeleton or something */}
-      {status === "loading" && "Loading..."}
-    </>
-  );
+  if (status === "success" || status === "loading")
+    return (
+      <ListView
+        listId={id}
+        todos={filteredItems}
+        isLoading={status === "loading"}
+        onMarkItemCompleted={handleMarkItemCompleted}
+        onDeleteItem={removeItem}
+        onViewItem={onViewItem}
+      />
+    );
+
+  // @todo Error handling
 };
 
 export default ListViewContainer;

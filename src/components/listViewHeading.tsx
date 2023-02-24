@@ -6,12 +6,14 @@ import {
   MenuItem,
   Box,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TodoListSchemaType } from "../schema/todoList";
 import FilterValueType from "../types/filterValueType";
 
 type ListViewHeadingProps = TodoListSchemaType & {
+  isLoading?: boolean;
   onCreateItem: (id: string) => unknown;
   filter: FilterValueType;
   onChangeFilter: (filter: FilterValueType) => unknown;
@@ -23,6 +25,7 @@ const ListViewHeading: React.FC<ListViewHeadingProps> = (props) => {
   const {
     id,
     name,
+    isLoading = false,
     onCreateItem,
     filter,
     onChangeFilter,
@@ -34,7 +37,7 @@ const ListViewHeading: React.FC<ListViewHeadingProps> = (props) => {
   return (
     <Stack padding={2} direction="row">
       <Typography variant="h4" flexGrow={1}>
-        {name}
+        {isLoading ? <CircularProgress /> : name}
       </Typography>
       <TextField
         placeholder="Search"

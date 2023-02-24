@@ -27,10 +27,16 @@ const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
     [status, data, id]
   );
 
-  if (status === "success") {
-    return <ListViewHeading name={currentList?.name!} {...props} />;
+  if (status === "success" || status === "loading") {
+    return (
+      <ListViewHeading
+        name={currentList?.name!}
+        {...props}
+        isLoading={status === "loading"}
+      />
+    );
   } else {
-    // @todo
+    // @todo Error handling
     return "???";
   }
 };
