@@ -14,7 +14,12 @@ interface ListViewContainerProps {
 }
 
 const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
-  const { id, filter = "all", search = "" } = props;
+  const { id, filter: filterProp, search = "" } = props;
+
+  const filter =
+    typeof filterProp === "string" && filterProp.length !== 0
+      ? filterProp
+      : "all";
 
   const { status, data } = useGetTodosQuery(id);
   // @todo use these states for loading and disable UI interactions!
