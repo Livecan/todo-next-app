@@ -27,7 +27,7 @@ const Layout: React.FC<React.PropsWithChildren> = (props) => {
   );
 
   useEffect(() => {
-    if (status !== "loading") {
+    if (status === "success") {
       setListToDelete(undefined);
       redirectDashboard();
     }
