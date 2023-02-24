@@ -22,33 +22,38 @@ const TodoList: NextPage = () => {
     search?: string;
   };
 
+  const [filterChanged, setFilterChanged] = useState(false);
   const [filterInternal, setFilterInternal] = useState(filter);
   const [searchInternal, setSearchInternal] = useState(search);
 
-  const searchAndFilterInternal = useMemo(
-    () => ({
-      filter: filterInternal,
-      search: searchInternal,
-    }),
-    [filterInternal, searchInternal]
-  );
+  const debouncedFilterChanged = useDebounce(filterChanged);
 
-  const debouncedSearchAndFilter = useDebounce(searchAndFilterInternal);
+  useEffect(() => {
+    if (debouncedFilterChanged && filterChanged) {
+      setFilterChanged(false);
+      redirectViewTodoList(id, {
+        filter: filterInternal,
+        search: searchInternal,
+      });
+    }
+  }, [
+    id,
+    filterInternal,
+    searchInternal,
+    filterChanged,
+    debouncedFilterChanged,
+    redirectViewTodoList,
+  ]);
 
-  useEffect(
-    () => { redirectViewTodoList(id, debouncedSearchAndFilter) },
-    [id, debouncedSearchAndFilter, redirectViewTodoList]
-  );
+  const handleChangeFilter = useCallback((filter: FilterValueType) => {
+    setFilterChanged(true);
+    setFilterInternal(filter);
+  }, []);
 
-  const handleChangeFilter = useCallback(
-    (filter: FilterValueType) => setFilterInternal(filter),
-    []
-  );
-
-  const handleSearchChange = useCallback(
-    (search: string) => setSearchInternal(search),
-    []
-  );
+  const handleSearchChange = useCallback((search: string) => {
+    setFilterChanged(true);
+    setSearchInternal(search);
+  }, []);
 
   return (
     <>

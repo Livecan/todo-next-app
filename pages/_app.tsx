@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Layout>
               {/* @todo Figure out why isReady needs to go together with query
             object for pages that don't receive query params */}
-              {isReady && typeof query === "object" ? (
+              {typeof query === "object" ? (
                 <Component {...pageProps} />
               ) : (
                 <Box
