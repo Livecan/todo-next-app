@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={darkTheme}>
