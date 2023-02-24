@@ -4,8 +4,7 @@ import ListViewContainer from "@/src/containers/listViewContainer";
 import ListViewHeadingContainer from "@/src/containers/listViewHeadingContainer";
 import useAppNavigation from "@/src/hooks/useAppNavigation";
 import FilterValueType from "@/src/types/filterValueType";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useDebounce from "@/src/hooks/useDebounce";
+import { useCallback, useEffect, useState } from "react";
 
 const TodoList: NextPage = () => {
   const { query } = useRouter();
@@ -26,24 +25,18 @@ const TodoList: NextPage = () => {
   const [filterInternal, setFilterInternal] = useState(filter);
   const [searchInternal, setSearchInternal] = useState(search);
 
-  const debouncedFilterChanged = useDebounce(filterChanged);
-
   useEffect(() => {
-    if (debouncedFilterChanged && filterChanged) {
-      setFilterChanged(false);
-      redirectViewTodoList(id, {
-        filter: filterInternal,
-        search: searchInternal,
-      });
-    }
-  }, [
-    id,
-    filterInternal,
-    searchInternal,
-    filterChanged,
-    debouncedFilterChanged,
-    redirectViewTodoList,
-  ]);
+    const timer = setTimeout(() => {
+      if (filterChanged) {
+        setFilterChanged(false);
+        redirectViewTodoList(id, {
+          filter: filterInternal,
+          search: searchInternal,
+        });
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [id, filterChanged, filterInternal, searchInternal, redirectViewTodoList]);
 
   const handleChangeFilter = useCallback((filter: FilterValueType) => {
     setFilterChanged(true);
