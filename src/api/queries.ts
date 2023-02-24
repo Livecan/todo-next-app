@@ -31,6 +31,16 @@ export const useCreateTodoListMutation = () =>
     }
   );
 
+export const useRemoveTodoListMutation = () =>
+  useMutation(
+    (listId: string) => customAxios.delete(`/API/v1/todo-lists/${listId}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todo-lists");
+      },
+    }
+  );
+
 export const useGetTodosQuery = (listId: string) =>
   useQuery<TodoItemSchemaType[]>(`todo-items ${listId}`, () =>
     customAxios

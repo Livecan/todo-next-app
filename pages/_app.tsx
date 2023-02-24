@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "../src/api/queries";
-import Layout from "../src/components/layout";
+import Layout from "../src/layouts/layout";
 import { useRouter } from "next/router";
 
 const darkTheme = createTheme({

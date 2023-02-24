@@ -37,7 +37,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
           >
             {completed ? <DoneIcon /> : <AccessAlarmIcon />}
           </IconButton>
-          <IconButton aria-label="delete" onClick={() => onDelete(id)}>
+          <IconButton aria-label="delete" onClick={() => onDelete(id!)}>
             <DeleteIcon />
           </IconButton>
         </Stack>
