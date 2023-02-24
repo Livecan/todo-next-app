@@ -22,7 +22,7 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
       ? filterProp
       : "all";
 
-  const { status, data } = useGetTodosQuery(id);
+  const { status, data } = useGetTodosQuery(id, { filter, search });
   // @todo use these states for loading and disable UI interactions!
   // (pass a loading/disabled prop to the ListView)
 

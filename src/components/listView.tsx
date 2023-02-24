@@ -25,19 +25,19 @@ const ListView: React.FC<ListViewProps> = (props) => {
     onViewItem,
   } = props;
 
+  if (isLoading) {
+    return <LoaderModal open={true} />;
+  }
+
   if (todos.length === 0) {
     // @todo Consider something smarter?
     return "No TODOs in the list...";
   }
 
-  if (isLoading) {
-    return <LoaderModal open={true} />;
-  }
-
   return (
     <Grid container spacing={2} padding={2}>
       {todos.map((todoItem) => (
-        <Grid item xs={12} sm={4} md={3} key={todoItem.id}>
+        <Grid item xs={12} sm={6} md={4} key={todoItem.id}>
           <ItemSummary
             {...todoItem}
             onMarkCompleted={onMarkItemCompleted}

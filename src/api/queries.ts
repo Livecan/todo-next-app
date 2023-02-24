@@ -2,6 +2,7 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import { TodoListSchemaType } from "../schema/todoList";
+import FilterValueType from "../types/filterValueType";
 
 const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -41,19 +42,39 @@ export const useRemoveTodoListMutation = () =>
     }
   );
 
-export const useGetTodosQuery = (listId: string) =>
-  useQuery<TodoItemSchemaType[]>(`todo-items ${listId}`, () =>
-    customAxios
-      .get<(TodoItemSchemaType & { deadline: number })[]>(
-        `/API/v1/todo-lists/${listId}/todo-items`
-      )
-      .then((res) =>
-        res.data.map((todoItem) => ({
-          ...todoItem,
-          deadline: new Date(todoItem.deadline),
-        }))
-      )
+export const useGetTodosQuery = (
+  listId: string,
+  filters?: { filter: FilterValueType; search: string }
+) => {
+  return useQuery<TodoItemSchemaType[]>(
+    [
+      `todo-items ${listId}`,
+      `todo-items ${listId} ${filters?.filter} ${filters?.search}`,
+    ],
+    () =>
+      customAxios
+        .get<(TodoItemSchemaType & { deadline: number })[]>(
+          `/API/v1/todo-lists/${listId}/todo-items`,
+          {
+            params: {
+              ...(typeof filters?.filter === "string" &&
+                filters.filter === "active" && { completed: false }),
+              ...(typeof filters?.filter === "string" &&
+                filters.filter === "completed" && { completed: true }),
+              ...(typeof filters?.search === "string" && {
+                search: filters.search,
+              }),
+            },
+          }
+        )
+        .then((res) =>
+          res.data.map((todoItem) => ({
+            ...todoItem,
+            deadline: new Date(todoItem.deadline),
+          }))
+        )
   );
+};
 
 export const useCreateTodoItemMutation = (listId: string) =>
   useMutation(
