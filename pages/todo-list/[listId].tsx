@@ -7,7 +7,8 @@ import FilterValueType from "@/src/types/filterValueType";
 
 const TodoList: NextPage = () => {
   const { query } = useRouter();
-  const { redirectCreateTodoItem, redirectViewTodoList } = useAppNavigation();
+  const { redirectCreateTodoItem, redirectViewTodoList, redirectViewTodoItem } =
+    useAppNavigation();
 
   const {
     listId: id,
@@ -33,7 +34,14 @@ const TodoList: NextPage = () => {
           redirectViewTodoList(id, { filter, search })
         }
       />
-      <ListViewContainer id={id} filter={filter} search={search} />
+      <ListViewContainer
+        id={id}
+        filter={filter}
+        search={search}
+        onViewItem={(todoItemId: string) =>
+          redirectViewTodoItem(id, todoItemId)
+        }
+      />
     </>
   );
 };

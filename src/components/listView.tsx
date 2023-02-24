@@ -7,13 +7,14 @@ export interface ListViewProps {
   todos: TodoItemSchemaType[];
   onMarkItemCompleted: (id: string) => unknown;
   onDeleteItem: (id: string) => unknown;
+  onViewItem: (itemId: string) => unknown;
 }
 
 /**
  * Displays the todo items as received via props.
  */
 const ListView: React.FC<ListViewProps> = (props) => {
-  const { listId, todos, onMarkItemCompleted, onDeleteItem } = props;
+  const { listId, todos, onMarkItemCompleted, onDeleteItem, onViewItem } = props;
 
   if (todos.length === 0) {
     // @todo Consider something smarter?
@@ -28,6 +29,7 @@ const ListView: React.FC<ListViewProps> = (props) => {
             {...todoItem}
             onMarkCompleted={onMarkItemCompleted}
             onDelete={onDeleteItem}
+            onViewItem={onViewItem}
           />
         </Grid>
       ))}

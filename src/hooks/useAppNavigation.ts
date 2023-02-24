@@ -21,6 +21,8 @@ const useAppNavigation = () => {
       redirectCreateTodoList: () => push(`/todo-list/new`),
       redirectCreateTodoItem: (listId: string) =>
         push(`/todo-list/${listId}/todo-item/new`),
+      redirectViewTodoItem: (listId: string, todoItemId: string) =>
+        push(`/todo-list/${listId}/todo-item/${todoItemId}`),
     }),
     [push]
   );

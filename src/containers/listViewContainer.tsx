@@ -11,10 +11,11 @@ interface ListViewContainerProps {
   id: string;
   filter?: FilterValueType;
   search?: string;
+  onViewItem: (itemId: string) => unknown;
 }
 
 const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
-  const { id, filter: filterProp, search = "" } = props;
+  const { id, filter: filterProp, search = "", onViewItem } = props;
 
   const filter =
     typeof filterProp === "string" && filterProp.length !== 0
@@ -24,6 +25,8 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
   const { status, data } = useGetTodosQuery(id);
   // @todo use these states for loading and disable UI interactions!
   // (pass a loading/disabled prop to the ListView)
+
+  // Mockapi doesn't support CORS PATCH request - i.e. OPTIONS doesn't return PATCH request.
   const { status: markItemCompleteStatus, mutate: markItemComplete } =
     useEditTodoItemMutation(id);
   const { status: removeStatus, mutate: removeItem } =
@@ -58,6 +61,7 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
           todos={filteredItems}
           onMarkItemCompleted={handleMarkItemCompleted}
           onDeleteItem={removeItem}
+          onViewItem={onViewItem}
         />
       )}
       {/* @todo Add loader or skeleton or something */}

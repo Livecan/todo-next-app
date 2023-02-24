@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   IconButton,
+  Link,
   Stack,
   Typography,
 } from "@mui/material";
@@ -15,11 +16,20 @@ import { useMemo } from "react";
 type ItemSummaryProps = TodoItemSchemaType & {
   onMarkCompleted: (id: string) => unknown;
   onDelete: (id: string) => unknown;
+  onViewItem: (id: string) => unknown;
 };
 
 const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
-  const { id, title, content, deadline, completed, onMarkCompleted, onDelete } =
-    props;
+  const {
+    id,
+    title,
+    content,
+    deadline,
+    completed,
+    onMarkCompleted,
+    onDelete,
+    onViewItem,
+  } = props;
 
   // @todo Move to utils formatting date
   const formattedDate = useMemo(() => formatDate(deadline), [deadline]);
@@ -28,9 +38,9 @@ const ItemSummary: React.FC<ItemSummaryProps> = (props) => {
     <Card>
       <CardContent>
         <Stack direction="row">
-          <Typography variant="h6" flexGrow={1}>
+          <Link variant="h6" flexGrow={1} onClick={() => onViewItem(id)}>
             {title}
-          </Typography>
+          </Link>
           <IconButton
             aria-label={completed ? "completed" : "mark completed"}
             onClick={() => onMarkCompleted(id!)}
