@@ -19,7 +19,7 @@ const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
 
   // Because of caching kicking in, it is better to load all todo lists here
   // rather than making a separate API call for each todo list
-  const { status, data } = useGetTodoListsQuery();
+  const { status, data, error } = useGetTodoListsQuery();
 
   const currentList = useMemo(
     () =>
@@ -27,17 +27,16 @@ const ListViewHeadingContainer: React.FC<ListViewHeadingContainerProps> = (
     [status, data, id]
   );
 
-  if (status === "success" || status === "loading") {
+  if (status !== "error") {
     return (
       <ListViewHeading
         name={currentList?.name!}
         {...props}
-        isLoading={status === "loading"}
+        isLoading={status === "loading" || status === "idle"}
       />
     );
   } else {
-    // @todo Error handling
-    return "???";
+    throw error;
   }
 };
 

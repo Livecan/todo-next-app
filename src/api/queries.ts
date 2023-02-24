@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery } from "react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import { TodoListSchemaType } from "../schema/todoList";
 import FilterValueType from "../types/filterValueType";
@@ -7,6 +7,22 @@ import FilterValueType from "../types/filterValueType";
 const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
+
+customAxios.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err instanceof AxiosError) {
+      if (err?.response?.data) {
+        throw new Error(err.response.data);
+      } else {
+        throw new Error(err.message);
+      }
+    } else {
+      throw new Error("Oops, something bad has happened");
+    }
+  }
+);
+
 export const queryClient = new QueryClient();
 
 // @todo Create appropriate detailed types for all the queries

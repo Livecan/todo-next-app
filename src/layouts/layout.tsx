@@ -31,7 +31,7 @@ const Layout: React.FC<React.PropsWithChildren> = (props) => {
       setListToDelete(undefined);
       redirectDashboard();
     }
-  }, [status]);
+  }, [status, redirectDashboard]);
 
   return (
     <>

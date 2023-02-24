@@ -10,7 +10,7 @@ interface ItemFormContainerProps {
 const ItemFormContainer: React.FC<ItemFormContainerProps> = (props) => {
   const { listId, onCreated } = props;
 
-  const { mutate, status } = useCreateTodoItemMutation(listId);
+  const { mutate, status, error } = useCreateTodoItemMutation(listId);
 
   useEffect(() => {
     if (status === "success") {
@@ -20,7 +20,11 @@ const ItemFormContainer: React.FC<ItemFormContainerProps> = (props) => {
 
   // @todo Try to figure out why this component gets mount-dismount-mount when mounting
 
-  return <ItemForm onSubmit={mutate} disabled={status==="loading"} />;
+  if (status !== "error") {
+    return <ItemForm onSubmit={mutate} disabled={status === "loading"} />;
+  } else {
+    throw error;
+  }
 };
 
 export default ItemFormContainer;

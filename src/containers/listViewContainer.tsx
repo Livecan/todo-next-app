@@ -22,15 +22,19 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
       ? filterProp
       : "all";
 
-  const { status, data } = useGetTodosQuery(id, { filter, search });
-  // @todo use these states for loading and disable UI interactions!
-  // (pass a loading/disabled prop to the ListView)
+  const { status, data, error } = useGetTodosQuery(id, { filter, search });
 
   // Mockapi doesn't support CORS PATCH request - i.e. OPTIONS doesn't return PATCH request.
-  const { status: markItemCompleteStatus, mutate: markItemComplete } =
-    useEditTodoItemMutation(id);
-  const { status: removeStatus, mutate: removeItem } =
-    useRemoveTodoItemMutation(id);
+  const {
+    status: markItemCompleteStatus,
+    mutate: markItemComplete,
+    error: markItemCompleteError,
+  } = useEditTodoItemMutation(id);
+  const {
+    status: removeItemStatus,
+    mutate: removeItem,
+    error: removeItemError,
+  } = useRemoveTodoItemMutation(id);
 
   const handleMarkItemCompleted = useCallback(
     (id: string) => {
@@ -53,19 +57,33 @@ const ListViewContainer: React.FC<ListViewContainerProps> = (props) => {
     [data, filter, search]
   );
 
-  if (status === "success" || status === "loading")
+  if (markItemCompleteStatus === "error") {
+    throw markItemCompleteError;
+  }
+
+  if (removeItemStatus === "error") {
+    throw removeItemError;
+  }
+
+  if (status !== "error")
     return (
       <ListView
         listId={id}
         todos={filteredItems}
-        isLoading={status === "loading"}
+        isLoading={
+          status === "loading" ||
+          status === "idle" ||
+          markItemCompleteStatus === "loading" ||
+          removeItemStatus === "loading"
+        }
         onMarkItemCompleted={handleMarkItemCompleted}
         onDeleteItem={removeItem}
         onViewItem={onViewItem}
       />
     );
-
-  // @todo Error handling
+  else {
+    throw error;
+  }
 };
 
 export default ListViewContainer;

@@ -9,7 +9,7 @@ interface ListFormContainerProps {
 const ListFormContainer: React.FC<ListFormContainerProps> = (props) => {
   const { onCreated } = props;
 
-  const { mutate, status, data } = useCreateTodoListMutation();
+  const { mutate, status, data, error } = useCreateTodoListMutation();
 
   useEffect(() => {
     if (status === "success") {
@@ -17,7 +17,11 @@ const ListFormContainer: React.FC<ListFormContainerProps> = (props) => {
     }
   }, [onCreated, status, data]);
 
-  return <ListForm onSubmit={mutate} disabled={status === "loading"} />;
+  if (status !== "error") {
+    return <ListForm onSubmit={mutate} disabled={status === "loading"} />;
+  } else {
+    throw error;
+  }
 };
 
 export default ListFormContainer;

@@ -15,6 +15,7 @@ import { QueryClientProvider } from "react-query";
 import { queryClient } from "../src/api/queries";
 import Layout from "../src/layouts/layout";
 import { useRouter } from "next/router";
+import ErrorBoundary from "@/src/components/ErrorBoundary";
 
 const darkTheme = createTheme({
   palette: {
@@ -28,26 +29,28 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <CssBaseline />
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={darkTheme}>
-          <Layout>
-            {/* @todo Figure out why isReady needs to go together with query
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={darkTheme}>
+            <Layout>
+              {/* @todo Figure out why isReady needs to go together with query
             object for pages that don't receive query params */}
-            {isReady && typeof query === "object" ? (
-              <Component {...pageProps} />
-            ) : (
-              <Box
-                display="flex"
-                height="100px"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <CircularProgress />
-              </Box>
-            )}
-          </Layout>
-        </ThemeProvider>
-      </QueryClientProvider>
+              {isReady && typeof query === "object" ? (
+                <Component {...pageProps} />
+              ) : (
+                <Box
+                  display="flex"
+                  height="100px"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+            </Layout>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
     </>
   );
 }

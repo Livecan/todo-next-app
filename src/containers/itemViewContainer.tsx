@@ -11,17 +11,23 @@ const ItemViewContainer: React.FC<ItemViewContainerProps> = (props) => {
   const { listId, itemId } = props;
 
   // @todo Deal with the status
-  const { status, data } = useGetTodosQuery(listId);
+  const { status, data, error } = useGetTodosQuery(listId);
 
   const currentItem = useMemo(
     () => data?.find((item) => item.id === itemId),
     [data, itemId]
   );
 
-  if (status === "success" || status === "loading") {
-    return <ItemView {...currentItem!} isLoading={status === "loading"} />;
+  if (status !== "error") {
+    return (
+      <ItemView
+        {...currentItem!}
+        isLoading={status === "loading" || status === "idle"}
+      />
+    );
+  } else {
+    throw error;
   }
-  return "Loading";
 };
 
 export default ItemViewContainer;

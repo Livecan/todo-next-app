@@ -10,19 +10,19 @@ interface ListsDrawerContainerProps {
 }
 
 const ListsDrawerContainer: React.FC<ListsDrawerContainerProps> = (props) => {
-  const { status, data } = useGetTodoListsQuery();
+  const { status, data, error } = useGetTodoListsQuery();
 
-  if (status === "success" || status === "loading") {
+  if (status !== "error") {
     return (
       <ListsDrawer
         {...props}
         lists={data ?? []}
-        isLoading={status === "loading"}
+        isLoading={status === "loading" || status === "idle"}
       />
     );
+  } else {
+    throw error;
   }
-
-  // @todo Error handling
 };
 
 export default ListsDrawerContainer;
