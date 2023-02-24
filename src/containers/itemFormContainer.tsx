@@ -20,7 +20,7 @@ const ItemFormContainer: React.FC<ItemFormContainerProps> = (props) => {
 
   // @todo Try to figure out why this component gets mount-dismount-mount when mounting
 
-  return <ItemForm onSubmit={mutate} />;
+  return <ItemForm onSubmit={mutate} disabled={status==="loading"} />;
 };
 
 export default ItemFormContainer;

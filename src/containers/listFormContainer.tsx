@@ -17,7 +17,7 @@ const ListFormContainer: React.FC<ListFormContainerProps> = (props) => {
     }
   }, [onCreated, status, data]);
 
-  return <ListForm onSubmit={mutate} />;
+  return <ListForm onSubmit={mutate} disabled={status === "loading"} />;
 };
 
 export default ListFormContainer;

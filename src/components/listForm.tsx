@@ -1,20 +1,16 @@
-import {
-  Button,
-  Container,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import todoListSchema, { TodoListSchemaType } from "../schema/todoList";
 import { useForm } from "react-hook-form";
+import LoaderModal from "./LoaderModal";
 
 interface ListFormProps {
   onSubmit: (todoList: TodoListSchemaType) => unknown;
+  disabled: boolean;
 }
 
 const ListForm: React.FC<ListFormProps> = (props) => {
-  const { onSubmit } = props;
+  const { onSubmit, disabled } = props;
 
   const {
     register,
@@ -31,6 +27,7 @@ const ListForm: React.FC<ListFormProps> = (props) => {
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
+      <LoaderModal open={disabled} />
       <Stack spacing={2} mt={2}>
         <Typography variant="h4" mt="2">
           New Todo list

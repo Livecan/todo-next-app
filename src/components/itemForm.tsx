@@ -5,13 +5,15 @@ import todoItemSchema, { TodoItemSchemaType } from "../schema/todoItem";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import LoaderModal from "./LoaderModal";
 
 interface ItemFormProps {
+  disabled: boolean;
   onSubmit: (todoList: TodoItemSchemaType) => unknown;
 }
 
 const ItemForm: React.FC<ItemFormProps> = (props) => {
-  const { onSubmit } = props;
+  const { disabled, onSubmit } = props;
 
   const {
     register,
@@ -30,6 +32,7 @@ const ItemForm: React.FC<ItemFormProps> = (props) => {
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
+      <LoaderModal open={disabled} />
       <Stack spacing={2} mt={2}>
         <Typography variant="h4" mt="2">
           New Todo item
