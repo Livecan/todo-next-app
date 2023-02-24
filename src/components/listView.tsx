@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { TodoItemSchemaType } from "../schema/todoItem";
 import ItemSummary from "./itemSummary";
 import LoaderModal from "./LoaderModal";
@@ -31,7 +31,7 @@ const ListView: React.FC<ListViewProps> = (props) => {
 
   if (todos.length === 0) {
     // @todo Consider something smarter?
-    return "No TODOs in the list...";
+    return <Typography>There are no @todo items in the list...</Typography>;
   }
 
   return (
