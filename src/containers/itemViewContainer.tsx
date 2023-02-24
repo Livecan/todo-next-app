@@ -18,8 +18,8 @@ const ItemViewContainer: React.FC<ItemViewContainerProps> = (props) => {
     [data, itemId]
   );
 
-  if (status === "success") {
-    return <ItemView {...currentItem!} />;
+  if (status === "success" || status === "loading") {
+    return <ItemView {...currentItem!} isLoading={status === "loading"} />;
   }
   return "Loading";
 };
